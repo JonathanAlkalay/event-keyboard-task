@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { MyActionListener } from '../MyActionListener';
 import { CharacterSquares } from './CharacterSquares';
 import { Keyboard } from './Keyboard';
+import { useActionListeners, ACTIONS } from '../hooks/useActionListeners';
 
 const useStyles = makeStyles()(({
   wordGameContainer: {
@@ -15,32 +15,13 @@ const useStyles = makeStyles()(({
   }
 }))
 
-const ACTIONS = {
-  KEY_PRESS: 'KEY_PRESS',
-  BACKSPACE: 'BACKSPACE',
-  ENTER: 'ENTER',
-};
-
 const MAX_CHARS = 5;
 
 export const WordGame = () => {
   const { classes } = useStyles();
   const [characters, setCharacters] = useState<string[]>([]);
   const [status, setStatus] = useState<'default' | 'success' | 'error'>('default');
-  const [actionListener] = useState(new MyActionListener());
-
-  useEffect(() => {
-    actionListener.register(ACTIONS.KEY_PRESS, handleKeyPress);
-    actionListener.register(ACTIONS.BACKSPACE, handleBackspace);
-    actionListener.register(ACTIONS.ENTER, handleEnter);
-
-    return () => {
-      actionListener.removeListener(ACTIONS.KEY_PRESS);
-      actionListener.removeListener(ACTIONS.BACKSPACE);
-      actionListener.removeListener(ACTIONS.ENTER);
-    };
-  }, [actionListener])
-
+  
   const handleKeyPress = ({ key, fullWord }: { key: string, fullWord: string }) => {
     if (fullWord.length < MAX_CHARS) {
       setCharacters((prev) => [...prev, key])
@@ -67,6 +48,8 @@ export const WordGame = () => {
       }
     }
   }
+  
+  const actionListener = useActionListeners({ handleKeyPress, handleBackspace, handleEnter })
 
   const handleKeyClick = (key: string) => {
       switch (key) {
