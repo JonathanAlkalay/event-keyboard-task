@@ -1,10 +1,20 @@
 import { useState, useEffect } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { MyActionListener } from '../MyActionListener';
 import { CharacterSquares } from './CharacterSquares';
 import { Keyboard } from './Keyboard';
-import './WordGame.css';
 
-// Define the action types
+const useStyles = makeStyles()(({
+  wordGameContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '20px',
+    gap: '20px'
+  }
+}))
+
 const ACTIONS = {
   KEY_PRESS: 'KEY_PRESS',
   BACKSPACE: 'BACKSPACE',
@@ -14,6 +24,7 @@ const ACTIONS = {
 const MAX_CHARS = 5;
 
 export const WordGame = () => {
+  const { classes } = useStyles();
   const [characters, setCharacters] = useState<string[]>([]);
   const [status, setStatus] = useState<'default' | 'success' | 'error'>('default');
   const [actionListener] = useState(new MyActionListener());
@@ -57,25 +68,25 @@ export const WordGame = () => {
     }
   }
 
-    const handleKeyClick = (key: string) => {
-        switch (key) {
-            case 'backspace': {
-                actionListener.emit(ACTIONS.BACKSPACE);
-                break;
-            }
-            case 'enter': {
-                actionListener.emit(ACTIONS.ENTER, characters.join(''));
-                break;
-            }
-            default: {
-                actionListener.emit(ACTIONS.KEY_PRESS, { key, fullWord: characters.join('') });
-                break;
-            }
-        }
-    };
+  const handleKeyClick = (key: string) => {
+      switch (key) {
+          case 'backspace': {
+              actionListener.emit(ACTIONS.BACKSPACE);
+              break;
+          }
+          case 'enter': {
+              actionListener.emit(ACTIONS.ENTER, characters.join(''));
+              break;
+          }
+          default: {
+              actionListener.emit(ACTIONS.KEY_PRESS, { key, fullWord: characters.join('') });
+              break;
+          }
+      }
+  };
 
   return (
-    <div className="word-game-container">
+    <div className={classes.wordGameContainer}>
       <CharacterSquares characters={characters} maxLength={MAX_CHARS} status={status} />
       <Keyboard onKeyClick={handleKeyClick} />
     </div>
