@@ -51,9 +51,9 @@ const useStyles = makeStyles()(({
 interface KeyboardProps {
   onKeyClick: (key: string) => void;
 }
-
 export const Keyboard = ({ onKeyClick }: KeyboardProps) => {
-  const { classes } = useStyles();
+  
+  const { classes } = useStyles()
   
   const rows = [
     ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
