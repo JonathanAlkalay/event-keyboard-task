@@ -8,7 +8,7 @@ export class MyActionListener {
         this.actionListeners = new Map()
     }
     
-    register(action: string, listener: (data: any) => void) {
+    register(action: string, listener: (data?: any) => void) {
         
         if (!this.actionListeners.has(action)) {
             this.actionListeners.set(action, [])
@@ -23,7 +23,7 @@ export class MyActionListener {
         this.actionListeners.delete(action)
     }
 
-    emit(action: string, data: any) {
+    emit(action: string, data?: any) {
 
         if (!this.actionListeners.has(action)) {
             throw new Error(`No listeners registered for action: ${action}`)

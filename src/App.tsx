@@ -1,12 +1,11 @@
+import React from 'react';
+import { WordGame } from './components/WordGame';
 import './App.css';
-import { InputViewer } from './keyboard-playground/InputViewer';
-import { MyActionListener } from './MyActionListener';
 
 function App() {
-
   return (
-    <InputViewer/>
-  );
+    <WordGame />
+  )
 }
 
 export default App;
